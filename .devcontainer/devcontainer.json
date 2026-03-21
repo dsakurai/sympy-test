@@ -4,7 +4,9 @@
         "dockerfile": "Dockerfile"
     },
     "updateRemoteUserUID": true,
+    "postCreateCommand": ".devcontainer/postCreateCommand.sh",
     "features": {
+        "ghcr.io/jsburckhardt/devcontainer-features/uv:1": {},
         // NOTE: using dotfiles from DevContainer may delay or even fail setting git configs.
         // After the dotfiles are installed, the following will be issued.
         // [159303 ms] Start: Run in container: # Test for /home/devuser/.gitconfig and git
@@ -16,10 +18,20 @@
             // "version": "os-provided"  // The default. When the VSCode is running on Windows and DevContainer on WSL, seems the Windows' git is passed.The understanding is important for managing credentials.  (If the git feature is not used, the credential seems to be from WSL.) 
         }
     },
-    // "customizations": {
-    //     "vscode": {
-    //         "extensions": [
-    //         ]
-    //     }
-    // }
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "ms-toolsai.jupyter",
+                "ms-python.python"
+            ],
+            "settings": {
+                // Specify the path to Python and to the virtual environment.
+                "python.defaultInterpreterPath" : "/workspaces/${localWorkspaceFolderBasename}/.venv/bin/python",
+                "python.venvPath": "/workspaces/${localWorkspaceFolderBasename}/.venv"
+            }
+        }
+    },
+    "containerEnv": {
+        "UV_PROJECT_ENVIRONMENT": "/workspaces/${localWorkspaceFolderBasename}/.venv"
+    }
 }
